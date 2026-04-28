@@ -1,14 +1,64 @@
 # Smart Supply Chain Intelligence System
 ### Multi-Modal Route Risk Monitor — Road · Rail · Sea (India + 3 Maritime Corridors)
 
+## 🚀 Live Demo
+**GitHub**: https://github.com/giri-yz/supplychain  
+**Deployed**: [Add your deployment URL here]
+
 ---
 
 ## Architecture
 
 ```
-React Frontend (Leaflet Map)  ←→  FastAPI Backend  ←→  tomorrow.io + OpenWeatherMap APIs
+React Frontend (Leaflet Map)  ←→  FastAPI Backend  ←→  tomorrow.io + OpenWeatherMap APIs + Gemini AI
         :3000                          :8000
 ```
+
+## 🐳 Docker Deployment (Recommended)
+
+### Quick Start with Docker
+```bash
+# Clone the repository
+git clone https://github.com/giri-yz/supplychain.git
+cd supplychain
+
+# Setup environment variables
+cp .env.example .env
+# Edit .env with your API keys
+
+# Start with Docker Compose
+docker-compose up -d
+```
+
+**Services:**
+- Frontend: http://localhost:3000
+- Backend: http://localhost:8000  
+- API Docs: http://localhost:8000/docs
+
+### Environment Variables
+Copy `.env.example` to `.env` and add your API keys:
+
+```bash
+# Weather APIs
+TOMORROW_API_KEY=your_tomorrow_api_key
+OWM_API_KEY=your_openweathermap_api_key
+
+# Gemini AI
+GEMINI_API_KEY=your_gemini_api_key
+GEMINI_MODEL=gemini-1.5-flash
+
+# Backend URL (for frontend)
+REACT_APP_API_URL=http://localhost:8000
+```
+
+**Get API Keys:**
+- [tomorrow.io](https://tomorrow.io/) - Marine weather data
+- [OpenWeatherMap](https://openweathermap.org/api) - Land weather data  
+- [Google Gemini](https://makersuite.google.com/app/apikey) - AI analysis
+
+---
+
+## Local Development
 
 **Routes Covered:**
 | ID | Name | Type |
@@ -103,15 +153,36 @@ Weather sources:
 
 ---
 
-## API Keys
-- **tomorrow.io**: `vmle9hoMwHIumkHqhsVd0wbpyerIc9aj`
-- **OpenWeatherMap**: `606dd22f35a1316a3b6cbdb88f0b4336`
+## ☁️ Cloud Deployment
 
-Set as environment variables if preferred:
+### Railway (Recommended)
 ```bash
-export TOMORROW_API_KEY=vmle9hoMwHIumkHqhsVd0wbpyerIc9aj
-export OWM_API_KEY=606dd22f35a1316a3b6cbdb88f0b4336
+# 1. Push to GitHub (already done!)
+# 2. Go to railway.app and connect your repo
+# 3. Add environment variables in Railway dashboard
+# 4. Deploy automatically! 🚀
 ```
+
+### Render
+```bash
+# 1. Connect GitHub repo to render.com
+# 2. Render auto-detects docker-compose.yml
+# 3. Add environment variables
+# 4. Deploy! 🎉
+```
+
+### AWS ECS / Google Cloud Run
+For production deployments, see deployment guide in the wiki.
+
+---
+
+## API Security
+🔒 **All API keys are stored in environment variables**  
+Never commit API keys to version control. Use `.env.example` as template.
+
+---
+
+## Project Structure
 
 ---
 
@@ -128,16 +199,23 @@ export OWM_API_KEY=606dd22f35a1316a3b6cbdb88f0b4336
 
 ## Project Structure
 ```
-supply-chain/
-├── backend/
-│   ├── main.py           # FastAPI app
-│   ├── risk_engine.py    # Route scoring + demo scenarios
-│   ├── weather_fetch.py  # tomorrow.io + OWM API integration
-│   └── requirements.txt
+supplychain/
+├── main.py                    # FastAPI backend
+├── risk_engine.py             # Route scoring + demo scenarios
+├── weather_fetch.py           # Weather API integration
+├── threat_fetcher.py          # Threat intelligence
+├── requirements.txt           # Python dependencies
+├── Dockerfile               # Backend container
+├── docker-compose.yml        # Multi-service orchestration
+├── .env.example            # Environment variables template
+├── .gitignore              # Git exclusions
 ├── frontend/
 │   ├── src/
-│   │   ├── App.jsx       # Full React dashboard
-│   │   └── index.js
-│   └── public/index.html
+│   │   ├── App.jsx         # React app entry
+│   │   └── AppImpl.jsx     # Main dashboard
+│   ├── public/index.html
+│   ├── Dockerfile           # Frontend container
+│   ├── nginx.conf          # Nginx reverse proxy
+│   └── package.json        # Node.js dependencies
 └── README.md
 ```
